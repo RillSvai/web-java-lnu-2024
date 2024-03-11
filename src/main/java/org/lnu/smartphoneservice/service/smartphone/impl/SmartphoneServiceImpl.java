@@ -1,6 +1,7 @@
 package org.lnu.smartphoneservice.service.smartphone.impl;
 
 import lombok.AllArgsConstructor;
+import org.lnu.smartphoneservice.dto.smartphone.BaseSmartphoneDto;
 import org.lnu.smartphoneservice.dto.smartphone.SmartphoneDto;
 import org.lnu.smartphoneservice.entity.smartphone.SmartphoneEntity;
 import org.lnu.smartphoneservice.mapper.SmartphoneMapper;
@@ -23,8 +24,15 @@ public class SmartphoneServiceImpl implements SmartphoneService {
     
     @Override
     public SmartphoneDto findOneById(Long id) {
-        SmartphoneDto smartphoneDto = new SmartphoneDto();
-        smartphoneDto.setId(id);
-        return smartphoneDto;
+        SmartphoneEntity smartphoneEntity = smartphoneRepository.findOneById(id);
+        return smartphoneMapper.toDto(smartphoneEntity);
+    }
+
+    @Override
+    public SmartphoneDto create(BaseSmartphoneDto baseSmartphoneDto) {
+        SmartphoneEntity smartphoneEntity = smartphoneMapper.toEntity(baseSmartphoneDto);
+        SmartphoneEntity createdSmartphoneEntity = smartphoneRepository.create(smartphoneEntity);
+        return smartphoneMapper.toDto(createdSmartphoneEntity);
+        
     }
 }

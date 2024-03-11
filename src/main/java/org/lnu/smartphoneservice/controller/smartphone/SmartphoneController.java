@@ -1,12 +1,11 @@
 package org.lnu.smartphoneservice.controller.smartphone;
 
 import lombok.AllArgsConstructor;
+import org.lnu.smartphoneservice.dto.smartphone.BaseSmartphoneDto;
 import org.lnu.smartphoneservice.dto.smartphone.SmartphoneDto;
 import org.lnu.smartphoneservice.service.smartphone.SmartphoneService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,5 +23,11 @@ public class SmartphoneController {
     @GetMapping("{id}")
     public SmartphoneDto findOneById(@PathVariable Long id) {
         return smartphoneService.findOneById(id);
+    }
+    
+    @PostMapping()
+    @ResponseStatus(HttpStatus.CREATED)
+    public SmartphoneDto create(@RequestBody BaseSmartphoneDto baseSmartphoneDto) {
+        return smartphoneService.create(baseSmartphoneDto);
     }
 }
