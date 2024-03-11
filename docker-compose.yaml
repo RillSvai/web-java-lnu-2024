@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: smartphone-service-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: smartphone_service
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_HOST_AUTH_METHOD: scram-sha-256
+      MAX_CONNECTIONS: 200
+    volumes:
+      - smartphone-service-postgres-data:/var/lib/postgresql/data
+    networks:
+      - smartphone-service-postgres-network
+    restart: unless-stopped
+
+volumes:
+  smartphone-service-postgres-data:
+    name: smartphone-service-postgres-data
+    driver: local
+
+networks:
+  smartphone-service-postgres-network:
+    name: smartphone-service-postgres-network
+    driver: bridge

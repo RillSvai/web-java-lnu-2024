@@ -1,0 +1,4 @@
+INSERT INTO smartphones (brand, model, os, screen_size, resolution, cpu_model, ram, storage, battery_capacity, camera_resolution, nfc_support) VALUES
+                                                                                                                                                   ('Samsung', 'Galaxy S21', 'Android', 6.2, '2400x1080', 'Exynos 2100', 8, 128, 4000, '64 MP', TRUE),
+                                                                                                                                                   ('Apple', 'iPhone 12', 'iOS', 6.1, '2532x1170', 'A14 Bionic', 4, 64, 2815, '12 MP', FALSE),
+                                                                                                                                                   ('Google', 'Pixel 5', 'Android', 6.0, '2340x1080', 'Snapdragon 765G', 8, 128, 4080, '12.2 MP', TRUE);
