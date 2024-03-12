@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(BaseException.class)
-    public ResponseEntity<ErrorResponse> handleNotFoundException(BaseException e) {
+    public ResponseEntity<ErrorResponse> handleBaseException(BaseException e) {
         ResponseStatus responseStatus = e.getClass().getAnnotation(ResponseStatus.class);
         HttpStatus httpStatus = responseStatus == null ? HttpStatus.INTERNAL_SERVER_ERROR : responseStatus.value();
 

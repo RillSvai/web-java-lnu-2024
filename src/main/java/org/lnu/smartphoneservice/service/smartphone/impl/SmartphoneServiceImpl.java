@@ -3,7 +3,9 @@ package org.lnu.smartphoneservice.service.smartphone.impl;
 import lombok.AllArgsConstructor;
 import org.lnu.smartphoneservice.dto.smartphone.BaseSmartphoneDto;
 import org.lnu.smartphoneservice.dto.smartphone.SmartphoneDto;
+import org.lnu.smartphoneservice.dto.smartphone.SmartphonePatch;
 import org.lnu.smartphoneservice.entity.smartphone.SmartphoneEntity;
+import org.lnu.smartphoneservice.exception.BadRequestException;
 import org.lnu.smartphoneservice.mapper.SmartphoneMapper;
 import org.lnu.smartphoneservice.repository.smartphone.SmartphoneRepository;
 import org.lnu.smartphoneservice.service.smartphone.SmartphoneService;
@@ -34,5 +36,25 @@ public class SmartphoneServiceImpl implements SmartphoneService {
         SmartphoneEntity createdSmartphoneEntity = smartphoneRepository.create(smartphoneEntity);
         return smartphoneMapper.toDto(createdSmartphoneEntity);
         
+    }
+
+    @Override
+    public void update(Long id, BaseSmartphoneDto baseSmartphoneDto) {
+        SmartphoneEntity smartphoneEntity = smartphoneMapper.toEntity(baseSmartphoneDto);
+        smartphoneEntity.setId(id);
+        smartphoneRepository.update(smartphoneEntity);
+    }
+
+    @Override
+    public void patch(Long id, SmartphonePatch smartphonePatch) {
+        if(smartphonePatch.isEmpty()) {
+            throw new BadRequestException("Smartphone patch is empty.");
+        }
+        smartphoneRepository.patch(id, smartphonePatch);
+    }
+
+    @Override
+    public void delete(Long id) {
+        smartphoneRepository.delete(id);
     }
 }
