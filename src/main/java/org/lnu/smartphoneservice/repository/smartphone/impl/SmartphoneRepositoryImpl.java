@@ -2,6 +2,7 @@ package org.lnu.smartphoneservice.repository.smartphone.impl;
 
 import lombok.AllArgsConstructor;
 import org.lnu.smartphoneservice.dto.smartphone.SmartphonePatch;
+import org.lnu.smartphoneservice.dto.smartphone.query.params.SmartphoneFilterOptions;
 import org.lnu.smartphoneservice.entity.smartphone.SmartphoneEntity;
 import org.lnu.smartphoneservice.exception.DataConflictException;
 import org.lnu.smartphoneservice.exception.NotFoundException;
@@ -113,6 +114,10 @@ public class SmartphoneRepositoryImpl implements SmartphoneRepository {
                 %s
             WHERE id = :id
             """;
+    private static final String SELECT_SMARTPHONES_COUNT_QUERY = """
+            SELECT COUNT(1) FROM smartphones
+            """;
+    
     private static final RowMapper<SmartphoneEntity> SMARTPHONE_ENTITY_ROW_MAPPER
         = (rs, rowNumber) -> {
         SmartphoneEntity smartphoneEntity = new SmartphoneEntity();
@@ -133,9 +138,38 @@ public class SmartphoneRepositoryImpl implements SmartphoneRepository {
     private final NamedParameterJdbcTemplate jdbcTemplate;
     
     @Override
-    public List<SmartphoneEntity> findAll() {
+    public List<SmartphoneEntity> findAll(SmartphoneFilterOptions filterOptions, Integer limit, Integer offset) {
+        StringBuilder queryBuilder = new StringBuilder(SELECT_SMARTPHONES_QUERY);
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        
+        appendConditions(queryBuilder, parameters, filterOptions);
+        
+        if (limit != null) {
+            queryBuilder.append(" LIMIT :limit");
+            parameters.addValue("limit", limit);
+        }
+        
+        if(offset != null && offset != 0) {
+            queryBuilder.append(" OFFSET :offset ");
+            parameters.addValue("offset", offset);
+        }
+        
+        String query = queryBuilder.toString();
+        
         return jdbcTemplate
-                .query(SELECT_SMARTPHONES_QUERY, SMARTPHONE_ENTITY_ROW_MAPPER);
+                .query(query, parameters, SMARTPHONE_ENTITY_ROW_MAPPER);
+    }
+
+    @Override
+    public Integer count(SmartphoneFilterOptions filterOptions) {
+        StringBuilder queryBuilder = new StringBuilder(SELECT_SMARTPHONES_COUNT_QUERY);
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        
+        appendConditions(queryBuilder, parameters, filterOptions);
+        
+        String query = queryBuilder.toString();
+        
+        return jdbcTemplate.queryForObject(query, parameters, Integer.class);
     }
 
     @Override
@@ -282,6 +316,47 @@ public class SmartphoneRepositoryImpl implements SmartphoneRepository {
         
         if (affectedRows == 0) {
             throw new NotFoundException("Smartphone with id " + id + " does not exist");
+        }
+    }
+
+    private void appendConditions(StringBuilder queryBuilder, MapSqlParameterSource parameters, SmartphoneFilterOptions filterOptions) {
+        List<String> conditions = new ArrayList<>();
+
+        String brandParam = filterOptions.getBrand();
+        if (brandParam != null) {
+            conditions.add("brand LIKE(:brand)");
+            parameters.addValue("brand", "%" + brandParam + "%");
+        }
+
+        String modelParam = filterOptions.getModel();
+        if (modelParam != null) {
+            conditions.add("model LIKE(:model)");
+            parameters.addValue("model", "%" + modelParam + "%");
+        }
+        
+        Integer ram = filterOptions.getRam();
+        if (ram != null) {
+            conditions.add("ram = :ram");
+            parameters.addValue("ram", ram);
+        }
+        
+        Integer storage = filterOptions.getStorage();
+        if (storage != null) {
+            conditions.add("storage = :storage");
+            parameters.addValue("storage", storage);
+        }
+        
+        Integer batteryCapacity = filterOptions.getBatteryCapacity();
+        if(batteryCapacity != null) {
+            conditions.add("battery_capacity = :battery_capacity");
+            parameters.addValue("battery_capacity", batteryCapacity);
+        }
+            
+        if (!conditions.isEmpty()) {
+            String conditionStr = String.join(" AND ",  conditions);
+
+            queryBuilder.append(" WHERE ");
+            queryBuilder.append(conditionStr);
         }
     }
 }

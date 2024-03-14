@@ -1,9 +1,11 @@
 package org.lnu.smartphoneservice.service.smartphone.impl;
 
 import lombok.AllArgsConstructor;
+import org.lnu.smartphoneservice.dto.common.ValueDto;
 import org.lnu.smartphoneservice.dto.smartphone.BaseSmartphoneDto;
 import org.lnu.smartphoneservice.dto.smartphone.SmartphoneDto;
 import org.lnu.smartphoneservice.dto.smartphone.SmartphonePatch;
+import org.lnu.smartphoneservice.dto.smartphone.query.params.SmartphoneFilterOptions;
 import org.lnu.smartphoneservice.entity.smartphone.SmartphoneEntity;
 import org.lnu.smartphoneservice.exception.BadRequestException;
 import org.lnu.smartphoneservice.mapper.SmartphoneMapper;
@@ -19,11 +21,17 @@ public class SmartphoneServiceImpl implements SmartphoneService {
     private final SmartphoneRepository smartphoneRepository;
     private final SmartphoneMapper smartphoneMapper;
     @Override
-    public List<SmartphoneDto> findAll() {
-        List<SmartphoneEntity> smartphoneEntities = smartphoneRepository.findAll();
+    public List<SmartphoneDto> findAll(SmartphoneFilterOptions filterOptions, Integer limit, Integer offset) {
+        List<SmartphoneEntity> smartphoneEntities = smartphoneRepository.findAll(filterOptions, limit, offset);
         return smartphoneMapper.toDtoList(smartphoneEntities);
     }
-    
+
+    @Override
+    public ValueDto<Integer> count(SmartphoneFilterOptions filterOptions) {
+        Integer count =  smartphoneRepository.count(filterOptions);
+        return new ValueDto<Integer>(count);
+    }
+
     @Override
     public SmartphoneDto findOneById(Long id) {
         SmartphoneEntity smartphoneEntity = smartphoneRepository.findOneById(id);

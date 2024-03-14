@@ -1,13 +1,16 @@
 package org.lnu.smartphoneservice.controller.smartphone;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.AllArgsConstructor;
+import org.lnu.smartphoneservice.dto.common.ValueDto;
 import org.lnu.smartphoneservice.dto.smartphone.BaseSmartphoneDto;
 import org.lnu.smartphoneservice.dto.smartphone.SmartphoneDto;
 import org.lnu.smartphoneservice.dto.smartphone.SmartphonePatch;
+import org.lnu.smartphoneservice.dto.smartphone.query.params.SmartphoneFilterOptions;
 import org.lnu.smartphoneservice.service.smartphone.SmartphoneService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.yaml.snakeyaml.events.Event;
 
 import java.util.List;
 
@@ -18,8 +21,31 @@ public class SmartphoneController {
     private final SmartphoneService smartphoneService;
     
     @GetMapping()
-    public List<SmartphoneDto> findAll() {
-        return smartphoneService.findAll();
+    @Operation(
+            parameters = {
+                    @Parameter(name = "model"),
+                    @Parameter(name = "brand"),
+                    @Parameter(name = "ram"),
+                    @Parameter(name = "storage"),
+                    @Parameter(name = "batteryCapacity")
+            }
+    )
+    public List<SmartphoneDto> findAll(@Parameter(hidden = true) SmartphoneFilterOptions filterOptions,@RequestParam(required = false) Integer limit, @RequestParam(required = false) Integer offset) {
+        return smartphoneService.findAll(filterOptions, limit, offset);
+    }
+    
+    @GetMapping("count")
+    @Operation(
+            parameters = {
+                    @Parameter(name = "model"),
+                    @Parameter(name = "brand"),
+                    @Parameter(name = "ram"),
+                    @Parameter(name = "storage"),
+                    @Parameter(name = "batteryCapacity")
+            }
+    )
+    public ValueDto<Integer> count(@Parameter(hidden = true) SmartphoneFilterOptions filterOptions) {
+        return smartphoneService.count(filterOptions);
     }
     
     @GetMapping("{id}")
