@@ -7,7 +7,7 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: dev
+      POSTGRES_USER: java
       POSTGRES_PASSWORD: password
       POSTGRES_DB: smartphone_service
       PGDATA: /var/lib/postgresql/data/pgdata
