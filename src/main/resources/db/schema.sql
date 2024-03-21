@@ -1,3 +1,6 @@
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
+
 CREATE TABLE smartphones (
                              id BIGSERIAL PRIMARY KEY,
                              brand VARCHAR(64) NOT NULL,

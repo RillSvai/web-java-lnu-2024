@@ -21,6 +21,7 @@
 		<springdoc.openapi.starter.webmvc.ui.version>2.3.0</springdoc.openapi.starter.webmvc.ui.version>
 		<net.ttddyy.datasource-proxy.version>1.10</net.ttddyy.datasource-proxy.version>
 		<spring.security.crypto.version>6.2.2</spring.security.crypto.version>
+		<spring.boot.starter.web.version>3.2.3</spring.boot.starter.web.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -30,6 +31,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<version>${spring.boot.starter.web.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
