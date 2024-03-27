@@ -3,6 +3,7 @@ package org.lnu.smartphoneservice.controller.smartphone;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.AllArgsConstructor;
+import org.lnu.smartphoneservice.annotation.TrackExecution;
 import org.lnu.smartphoneservice.dto.common.ValueDto;
 import org.lnu.smartphoneservice.dto.smartphone.BaseSmartphoneDto;
 import org.lnu.smartphoneservice.dto.smartphone.SmartphoneDto;
@@ -14,12 +15,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@TrackExecution
 @RestController
 @RequestMapping("smartphones")
 @AllArgsConstructor
 public class SmartphoneController {
     private final SmartphoneService smartphoneService;
-    
+
     @GetMapping()
     @Operation(
             parameters = {
@@ -47,7 +49,8 @@ public class SmartphoneController {
     public ValueDto<Integer> count(@Parameter(hidden = true) SmartphoneFilterOptions filterOptions) {
         return smartphoneService.count(filterOptions);
     }
-    
+
+    @TrackExecution(isEnabled = false)
     @GetMapping("{id}")
     public SmartphoneDto findOneById(@PathVariable Long id) {
         return smartphoneService.findOneById(id);

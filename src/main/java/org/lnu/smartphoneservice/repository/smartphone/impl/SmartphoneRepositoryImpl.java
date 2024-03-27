@@ -1,6 +1,7 @@
 package org.lnu.smartphoneservice.repository.smartphone.impl;
 
 import lombok.AllArgsConstructor;
+import org.lnu.smartphoneservice.annotation.TrackExecution;
 import org.lnu.smartphoneservice.dto.smartphone.SmartphonePatch;
 import org.lnu.smartphoneservice.dto.smartphone.query.params.SmartphoneFilterOptions;
 import org.lnu.smartphoneservice.entity.smartphone.SmartphoneEntity;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
+@TrackExecution
 @Repository
 @AllArgsConstructor
 public class SmartphoneRepositoryImpl implements SmartphoneRepository {

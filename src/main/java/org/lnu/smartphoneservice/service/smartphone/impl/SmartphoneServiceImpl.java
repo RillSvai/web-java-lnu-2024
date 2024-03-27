@@ -1,6 +1,7 @@
 package org.lnu.smartphoneservice.service.smartphone.impl;
 
 import lombok.AllArgsConstructor;
+import org.lnu.smartphoneservice.annotation.TrackExecution;
 import org.lnu.smartphoneservice.dto.common.ValueDto;
 import org.lnu.smartphoneservice.dto.smartphone.BaseSmartphoneDto;
 import org.lnu.smartphoneservice.dto.smartphone.SmartphoneDto;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@TrackExecution
 @Service
 @AllArgsConstructor
 public class SmartphoneServiceImpl implements SmartphoneService {
