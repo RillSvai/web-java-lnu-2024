@@ -1,5 +1,7 @@
 package org.lnu.smartphoneservice.service.user;
 
+import lombok.Value;
+import org.lnu.smartphoneservice.dto.common.ValueDto;
 import org.lnu.smartphoneservice.dto.user.UserCreateDto;
 import org.lnu.smartphoneservice.dto.user.UserDto;
 import org.lnu.smartphoneservice.dto.user.UserUpdateDto;
@@ -10,6 +12,8 @@ public interface UserService {
     UserDto create (UserCreateDto userCreateDto);
 
     List<UserDto> findAll();
+
+    ValueDto<Long> count();
 
     UserDto findOneById(Long id);
 

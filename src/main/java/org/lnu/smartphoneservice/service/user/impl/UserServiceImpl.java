@@ -2,6 +2,7 @@ package org.lnu.smartphoneservice.service.user.impl;
 
 import lombok.AllArgsConstructor;
 import org.hibernate.exception.ConstraintViolationException;
+import org.lnu.smartphoneservice.dto.common.ValueDto;
 import org.lnu.smartphoneservice.dto.user.UserCreateDto;
 import org.lnu.smartphoneservice.dto.user.UserDto;
 import org.lnu.smartphoneservice.dto.user.UserUpdateDto;
@@ -10,6 +11,7 @@ import org.lnu.smartphoneservice.exception.DataConflictException;
 import org.lnu.smartphoneservice.exception.NotFoundException;
 import org.lnu.smartphoneservice.mapper.UserMapper;
 import org.lnu.smartphoneservice.repository.user.UserRepository;
+import org.springdoc.core.converters.models.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +51,11 @@ public class UserServiceImpl implements org.lnu.smartphoneservice.service.user.U
     public List<UserDto> findAll() {
         List<UserEntity> userEntities = userRepository.findAll();
         return userMapper.toDtoList(userEntities);
+    }
+
+    @Override
+    public ValueDto<Long> count() {
+        return new ValueDto<>(userRepository.count());
     }
 
     @Override

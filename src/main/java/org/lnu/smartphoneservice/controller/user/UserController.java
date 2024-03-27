@@ -1,6 +1,7 @@
 package org.lnu.smartphoneservice.controller.user;
 
 import lombok.AllArgsConstructor;
+import org.lnu.smartphoneservice.dto.common.ValueDto;
 import org.lnu.smartphoneservice.dto.user.UserCreateDto;
 import org.lnu.smartphoneservice.dto.user.UserDto;
 import org.lnu.smartphoneservice.dto.user.UserUpdateDto;
@@ -25,6 +26,11 @@ public class UserController {
     @GetMapping
     public List<UserDto> findAll() {
         return userService.findAll();
+    }
+
+    @GetMapping("count")
+    public ValueDto<Long> count () {
+        return userService.count();
     }
 
     @GetMapping("{id}")
